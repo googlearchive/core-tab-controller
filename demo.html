@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Core Tab Controller</title>
+  <link rel="import" href="core-tab-controller.html">
+  <link rel="import" href="../paper-tabs/paper-tabs.html">
+  <link rel="import" href="../core-pages/core-pages.html">
+  <link rel="import" href="../font-roboto/roboto.html">
+</head>
+<body>
+  <style>
+    paper-tabs {
+      background: #eaeaea;
+      font-family: RobotoDraft;
+      color: blue;
+    }
+  </style>
+  <template is="auto-binding">
+    <core-tab-controller>
+      <paper-tabs valueattr="name" selected="{{ selected }}">
+        <paper-tab name="a">ONE</paper-tab>
+        <paper-tab name="b">TWO</paper-tab>
+        <paper-tab name="c">THREE</paper-tab>
+        <paper-tab name="d">FOUR</paper-tab>
+      </paper-tabs>
+      <core-pages valueattr="id" selected="{{ selected }}">
+        <div id="b" tabindex="0">one</div>
+        <div id="a" tabindex="0">two</div>
+        <div id="c" tabindex="0">three</div>
+        <div id="d" tabindex="0">four</div>
+      </core-pages>
+    </core-tab-controller>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <style>
+      #tabcontainer {
+        background: lightgrey;
+        border: 1px solid black;
+      }
+      #tabcontainer > core-selector {
+        width: 100%;
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+      #tabcontainer > core-selector > span {
+        height: 20px;
+        flex: 1 0 auto;
+      }
+      #tabcontainer > core-selector > .core-selected {
+        background: blue;
+      }
+    </style>
+
+    <div id="tabcontainer" role="tablist">
+      <core-selector valueattr="name" selected="{{manual}}">
+        <span role="tab" name="pages-c" aria-controls="pages-c">ONE</span>
+        <span role="tab" name="pages-b" aria-controls="pages-b">TWO</span>
+        <span role="tab" name="pages-d" aria-controls="pages-d">THREE</span>
+        <span role="tab" name="pages-a" aria-controls="pages-a">FOUR</span>
+        <span role="tab" name="pages-e" aria-controls="pages-e">FIVE</span>
+      </core-selector>
+      <core-pages valueattr="id" selected="{{manual}}">
+        <div id="pages-a" role="tabpanel">I</div>
+        <div id="pages-b" role="tabpanel">II</div>
+        <div id="pages-c" role="tabpanel">III</div>
+        <div id="pages-d" role="tabpanel">IV</div>
+        <div id="pages-e" role="tabpanel">V</div>
+      </core-pages>
+    </div>
+  </template>
+  <script>
+    var t = document.querySelector('template');
+    t.selected = 'a';
+    t.manual = 'pages-a';
+  </script>
+</body>
+</html>

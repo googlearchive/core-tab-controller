@@ -1,0 +1,91 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../polymer/polymer.html">
+
+<polymer-element name="aria-matchmaker">
+  <script>
+    (function() {
+      var i = 0;
+      function generate(node) {
+        if (!node.id) {
+          node.id = 'aria-matchmaker-' + i++;
+        }
+      }
+
+      Polymer('aria-matchmaker', {
+        publish: {
+          tabs: null,
+          pages: null,
+          observe: {
+            'tabs pages': 'updateControls'
+          }
+        },
+        domReady: function() {
+          if (!this.tabs) {
+            this.tabs = this.firstElementChild;
+          }
+          if (!this.pages) {
+            this.pages = this.lastElementChild;
+          }
+        },
+        updateControls: function(_, _, changeRecords) {
+          if (changeRecords) {
+            var oldValues = changeRecords[1];
+            var oldTabs = oldValues[0];
+            var oldPages = oldValues[1];
+            if (oldTabs && oldTabs !== this.tabs) {
+              var keys = oldTabs.items
+              for (var i = 0; i < keys.length; i++) {
+                keys[i].removeAttribute('aria-controls');
+              }
+            }
+            if (oldPages & oldPages !== this.pages) {
+              var values = oldPages.items;
+              for (var i = 0; i < values.length; i++) {
+                values[i].removeAttribute('role');
+              }
+            }
+          }
+          if (this.tabs && this.pages) {
+            this._mapTabsToPages();
+          }
+        },
+        _mapTabsToPages: function() {
+          var keys = this.tabs.items;
+          var values = this.pages.items;
+          var tabKey = this.tabs.valueattr;
+          var pageKey = this.pages.valueattr;
+          for (var i = 0, k, v, kv, vv; i < keys.length; i++) {
+            k = keys[i];
+            if (tabKey && pageKey) {
+              kv = this.tabs.valueForNode(k);
+              v = null;
+              for (var j = 0; j < values.length; j++) {
+                v = values[j];
+                vv = this.pages.valueForNode(v);
+                if (kv === vv) {
+                  values.splice(j, 1);
+                  break;
+                }
+              }
+            } else {
+              v = values[i];
+            }
+            if (v) {
+              generate(v);
+              k.setAttribute('aria-controls', v.id);
+              v.setAttribute('role', 'tabpanel');
+            }
+          }
+        }
+      });
+    })();
+  </script>
+</polymer-element>
