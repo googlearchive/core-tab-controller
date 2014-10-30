@@ -9,17 +9,17 @@
 -->
 <link rel="import" href="../polymer/polymer.html">
 
-<polymer-element name="aria-matchmaker">
+<polymer-element name="core-tab-controller">
   <script>
     (function() {
       var i = 0;
       function generate(node) {
         if (!node.id) {
-          node.id = 'aria-matchmaker-' + i++;
+          node.id = 'core-tab-controller-' + i++;
         }
       }
 
-      Polymer('aria-matchmaker', {
+      Polymer('core-tab-controller', {
         publish: {
           tabs: null,
           pages: null,
